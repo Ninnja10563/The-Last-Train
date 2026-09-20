@@ -43,7 +43,7 @@ jobs:
         env:
           DESKTOP_EXECUTABLE: ${{ github.workspace }}/${{ matrix.app }}
       - name: Verify disk image
-        run: hdiutil verify release/*.dmg
+        run: for image in release/*.dmg; do hdiutil verify "$image"; done
       - uses: actions/upload-artifact@v4
         with:
           name: mac-${{ matrix.arch }}
