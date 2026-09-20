@@ -83,6 +83,6 @@ npm ci
 npm run desktop
 ```
 
-Build macOS disk images on a Mac with `npm run package:mac`. The `.github/workflows/desktop-release.yml` workflow also builds each architecture on its matching macOS runner when a `v*` tag matching `package.json` is pushed. It runs unit tests, verifies the app signature, tests the packaged application (rendering, sandbox, movement, export/import and restart persistence), verifies each DMG, and publishes both files plus SHA-256 checksums only after both builds pass.
+Build macOS disk images on a Mac with `npm run package:mac`. The `.github/workflows/desktop-release.yml` workflow also builds each architecture on its matching macOS runner when a `v*` tag matching `package.json` is pushed. The Intel runner uses software rendering for its virtual display; the shipped app uses normal hardware acceleration. The workflow runs unit tests, verifies the app signature, tests the packaged application (rendering, sandbox, movement, export/import and restart persistence), verifies each DMG, and publishes both files plus SHA-256 checksums only after both builds pass.
 
 The Electron renderer is sandboxed with Node integration disabled, a restricted `app://game` asset protocol, and a content security policy. The desktop wrapper does not open a local network server. Optional AI endpoints must allow CORS for `app://game`.

@@ -41,6 +41,7 @@ jobs:
       - name: Test the packaged application
         run: npm run test:desktop
         env:
+          DESKTOP_SOFTWARE_RENDERING: ${{ matrix.arch == 'x64' && '1' || '0' }}
           DESKTOP_EXECUTABLE: ${{ github.workspace }}/${{ matrix.app }}
       - name: Verify disk image
         run: for image in release/*.dmg; do hdiutil verify "$image"; done

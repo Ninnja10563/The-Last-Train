@@ -12,13 +12,9 @@ async function launch() {
     ...(process.env.DESKTOP_EXECUTABLE ? { executablePath: process.env.DESKTOP_EXECUTABLE } : {}),
     args: [
       ...(process.env.DESKTOP_EXECUTABLE ? [] : ['electron/main.cjs']),
-      ...(process.platform === 'linux'
-        ? [
-            '--no-sandbox',
-            '--use-gl=angle',
-            '--use-angle=swiftshader',
-            '--enable-unsafe-swiftshader',
-          ]
+      ...(process.platform === 'linux' ? ['--no-sandbox'] : []),
+      ...(process.platform === 'linux' || process.env.DESKTOP_SOFTWARE_RENDERING === '1'
+        ? ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader']
         : []),
     ],
     env: { ...process.env, LAST_TRAIN_USER_DATA: profile },
@@ -27,7 +23,23 @@ async function launch() {
   const page = await desktop.firstWindow();
   page.setDefaultTimeout(120000);
   page.on('pageerror', (error) => errors.push(error.message));
-  await page.waitForFunction(() => window.__LAST_TRAIN__);
+  page.on('console', (message) => {
+    if (message.type() === 'error') console.error('Renderer:', message.text());
+  });
+  await page.waitForFunction(
+    () => window.__LAST_TRAIN__ || document.body.textContent.includes('WebGL is unavailable'),
+  );
+  assert.ok(
+    await page.evaluate(() => Boolean(window.__LAST_TRAIN__)),
+    'WebGL startup failed: ' + (await page.locator('body').innerText()),
+  );
+  console.log(
+    'Desktop initialized on',
+    process.arch,
+    process.env.DESKTOP_SOFTWARE_RENDERING === '1'
+      ? '(software-rendered CI)'
+      : '(default renderer)',
+  );
   return page;
 }
 try {

@@ -21,4 +21,4 @@ This community build is ad-hoc signed, **not Apple Developer ID signed or notari
 
 Browser saves do not automatically migrate. Export your case in the browser game's Settings and import it in the application's Settings.
 
-Both architecture-specific app bundles are smoke-tested on macOS before publication. The DMGs are verified and SHA-256 checksums are attached. Use a currently supported macOS release.
+Both architecture-specific app bundles are smoke-tested on macOS before publication (software rendering on the virtual Intel runner). The DMGs are verified and SHA-256 checksums are attached. Use a currently supported macOS release.
