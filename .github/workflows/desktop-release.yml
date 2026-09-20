@@ -14,9 +14,6 @@ jobs:
           - arch: arm64
             runner: macos-15
             app: release/mac-arm64/The Last Train.app/Contents/MacOS/The Last Train
-          - arch: x64
-            runner: macos-15-intel
-            app: release/mac/The Last Train.app/Contents/MacOS/The Last Train
     runs-on: ${{ matrix.runner }}
     timeout-minutes: 30
     steps:
@@ -41,7 +38,6 @@ jobs:
       - name: Test the packaged application
         run: npm run test:desktop
         env:
-          DESKTOP_SOFTWARE_RENDERING: ${{ matrix.arch == 'x64' && '1' || '0' }}
           DESKTOP_EXECUTABLE: ${{ github.workspace }}/${{ matrix.app }}
       - name: Verify disk image
         run: for image in release/*.dmg; do hdiutil verify "$image"; done
@@ -51,7 +47,7 @@ jobs:
           path: release/*.dmg
           if-no-files-found: error
   publish:
-    name: Publish verified DMGs
+    name: Publish verified Apple Silicon DMG
     needs: macos
     runs-on: ubuntu-latest
     permissions:

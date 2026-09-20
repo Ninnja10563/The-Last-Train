@@ -70,7 +70,7 @@ The accusation evaluator is a conservative English key-fact heuristic, including
 
 ## Standalone macOS application
 
-Download a DMG from [GitHub Releases](https://github.com/Ninnja10563/The-Last-Train/releases). Choose **mac-arm64** for Apple Silicon (including M3), or **mac-x64** for Intel. Open the image, drag The Last Train into Applications, eject the image, and launch the installed application. No browser, Node.js, or running development server is required. All game assets, fonts, and audio work offline; only optional AI direction needs its configured service.
+Download a DMG from [GitHub Releases](https://github.com/Ninnja10563/The-Last-Train/releases). Choose **mac-arm64** for Apple Silicon (including M3). This release ships only the validated Apple Silicon application. Open the image, drag The Last Train into Applications, eject the image, and launch the installed application. No browser, Node.js, or running development server is required. All game assets, fonts, and audio work offline; only optional AI direction needs its configured service.
 
 These community builds are ad-hoc signed, not Apple Developer ID signed or notarized. If macOS blocks the app, review its entry in System Settings → Privacy & Security and choose Open Anyway. Managed Macs may prohibit this. Future notarized releases require Apple Developer signing credentials; none are embedded in this project.
 
@@ -83,6 +83,6 @@ npm ci
 npm run desktop
 ```
 
-Build macOS disk images on a Mac with `npm run package:mac`. The `.github/workflows/desktop-release.yml` workflow also builds each architecture on its matching macOS runner when a `v*` tag matching `package.json` is pushed. The Intel runner uses software rendering for its virtual display; the shipped app uses normal hardware acceleration. The workflow runs unit tests, verifies the app signature, tests the packaged application (rendering, sandbox, movement, export/import and restart persistence), verifies each DMG, and publishes both files plus SHA-256 checksums only after both builds pass.
+Build an Apple Silicon disk image on a Mac with `npm run package:mac`. Intel packaging is available with `npm run build && npx electron-builder --mac --x64 --publish never`, but it is not included in releases because the hosted Intel runner could not initialize WebGL for validation. The `.github/workflows/desktop-release.yml` workflow also builds the Apple Silicon application on a native macOS runner when a `v*` tag matching `package.json` is pushed. The workflow runs unit tests, verifies the app signature, tests the packaged application (rendering, sandbox, movement, export/import and restart persistence), verifies the DMG, and publishes the installer plus its SHA-256 checksum only after all checks pass.
 
 The Electron renderer is sandboxed with Node integration disabled, a restricted `app://game` asset protocol, and a content security policy. The desktop wrapper does not open a local network server. Optional AI endpoints must allow CORS for `app://game`.

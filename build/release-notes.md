@@ -2,8 +2,9 @@ THE LAST TRAIN is now a standalone macOS application. No Node.js installation, b
 
 ## Download
 
-- **Apple Silicon (M1/M2/M3/M4 and later):** choose the DMG ending in `mac-arm64.dmg`.
-- **Intel Mac:** choose the DMG ending in `mac-x64.dmg`.
+- **Apple Silicon (M1/M2/M3/M4 and later):** download the DMG ending in `mac-arm64.dmg`. This is the build for your MacBook Air M3.
+
+This release contains the verified Apple Silicon application. Intel packaging remains available from source, but no Intel DMG is published: the hosted Intel runner could not initialize WebGL, so that build could not be validated.
 
 Open the disk image and drag **The Last Train** into **Applications**, then launch it from Applications. Do not run the app from inside the mounted DMG.
 
@@ -21,4 +22,4 @@ This community build is ad-hoc signed, **not Apple Developer ID signed or notari
 
 Browser saves do not automatically migrate. Export your case in the browser game's Settings and import it in the application's Settings.
 
-Both architecture-specific app bundles are smoke-tested on macOS before publication (software rendering on the virtual Intel runner). The DMGs are verified and SHA-256 checksums are attached. Use a currently supported macOS release.
+The Apple Silicon app bundle is smoke-tested on a native Apple Silicon macOS runner before publication. Its ad-hoc signature and DMG integrity are verified, and a SHA-256 checksum is attached. Use a currently supported macOS release.
